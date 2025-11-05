@@ -9,12 +9,12 @@ with lzma.open("model_compressed_p3.pkl.xz", "rb") as f:
     model = joblib.load(f)
 
 # App title and description
-st.title("🏠 House Price Prediction App")
+st.title("🏠 House Price Prediction App (₹ INR)")
 
 st.divider()
 
 st.write(
-    "This app uses a machine learning model to predict house prices "
+    "This app uses a machine learning model to predict **house prices in Indian Rupees (₹)** "
     "based on the features you enter below. Enter the details and click **Predict!**"
 )
 
@@ -34,6 +34,13 @@ if st.button("Predict!"):
     st.balloons()
     x = np.array([[bedrooms, bathrooms, livingarea, condition, numberofschools]])
     prediction = model.predict(x)[0]
-    st.success(f"💰 Estimated house price: **${prediction:,.2f}**")
+
+    # 💱 Convert USD to INR if needed (optional)
+    usd_to_inr = 84.0  # Approximate exchange rate
+    price_in_inr = prediction * usd_to_inr
+
+    st.success(f"💰 Estimated house price: **₹{price_in_inr:,.2f}**")
 else:
-    st.info("👆 Enter values and press **Predict!** to get a price estimate.")
+    st.info("👆 Enter values and press **Predict!** to get a price estimate in ₹ INR.")
+
+
